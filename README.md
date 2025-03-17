@@ -10,9 +10,9 @@ As at your own risk, i provide no support at all.
 
 Image is available at:
 
-* Docker Hub: `docker.io/l33tlamer/unbound-recursive:latest`
+* [Docker Hub](https://hub.docker.com/r/l33tlamer/unbound-recursive): `docker.io/l33tlamer/unbound-recursive:latest`
 
-* Github: `ghcr.io/l33tlamer/unbound-recursive:latest`
+* [Github](https://github.com/l33tlamer/unbound-recursive/pkgs/container/unbound-recursive): `ghcr.io/l33tlamer/unbound-recursive:latest`
 
 Available tags:
 
@@ -24,7 +24,7 @@ Available tags:
 
 Currently for `amd64` only, maybe `arm` later.
 
-**Note:** The image will check if `/opt/unbound/etc/unbound/unbound.conf` exists, if it doesnt, it will
+**Note:** The image will check if `/opt/unbound/etc/unbound/unbound.conf` exists, and if it doesnt, it will
 create its own with certain default values. Inspect the `/unbound.sh` script for those defaults.
 If you want to use your own custom config, i suggest you use a bind mount at container runtime:
 
