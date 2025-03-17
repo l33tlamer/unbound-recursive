@@ -24,7 +24,13 @@ Available tags:
 
 Currently for `amd64` only, maybe `arm` later.
 
-Source is available at:
+**Note:** The image will check if `/opt/unbound/etc/unbound/unbound.conf` exists, if it doesnt, it will
+create its own with certain default values. Inspect the `/unbound.sh` script for those defaults.
+If you want to use your own custom config, i suggest you use a bind mount at container runtime:
+
+`-v /your/own/unbound.conf:/opt/unbound/etc/unbound/unbound.conf`
+
+Image source is available at:
 
 * https://github.com/l33tlamer/unbound-recursive
 
