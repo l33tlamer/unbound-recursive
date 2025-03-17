@@ -1,6 +1,6 @@
 # Unbound-Recursive
 
-Simple Docker image for [Unbound](https://nlnetlabs.nl/projects/unbound/about/) as recursive DNS resolver
+Simple Docker image for [Unbound](https://nlnetlabs.nl/projects/unbound/about/) as recursive DNS resolver with DNSSEC.
 
 **This is heavily based on [mvance/unbound](https://hub.docker.com/r/mvance/unbound), all credit to them.**
 
