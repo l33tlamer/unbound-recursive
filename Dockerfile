@@ -1,9 +1,9 @@
 FROM debian:bookworm AS openssl
 
-ENV VERSION_OPENSSL=openssl-3.3.2 \
-    SHA256_OPENSSL=2e8a40b01979afe8be0bbfb3de5dc1c6709fedb46d6c89c10da114ab5fc3d281 \
-    SOURCE_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.3.2/openssl-3.3.2.tar.gz \
-    ASC_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.3.2/openssl-3.3.2.tar.gz.asc
+ENV VERSION_OPENSSL=openssl-3.5.0 \
+    SHA256_OPENSSL=344d0a79f1a9b08029b0744e2cc401a43f9c90acd1044d09a530b4885a8e9fc0 \
+    SOURCE_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz \
+    ASC_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz.asc
 
 WORKDIR /tmp/src
 
@@ -42,9 +42,9 @@ RUN set -e -x && \
 FROM debian:bookworm AS unbound
 
 ENV NAME=unbound \
-    UNBOUND_VERSION=1.21.0 \
-    UNBOUND_SHA256=e7dca7d6b0f81bdfa6fa64ebf1053b5a999a5ae9278a87ef182425067ea14521 \
-    UNBOUND_DOWNLOAD_URL=https://nlnetlabs.nl/downloads/unbound/unbound-1.21.0.tar.gz
+    UNBOUND_VERSION=1.23.0 \
+    UNBOUND_SHA256=959bd5f3875316d7b3f67ee237a56de5565f5b35fc9b5fc3cea6cfe735a03bb8 \
+    UNBOUND_DOWNLOAD_URL=https://nlnetlabs.nl/downloads/unbound/unbound-1.23.0.tar.gz
 
 WORKDIR /tmp/src
 
@@ -128,7 +128,7 @@ WORKDIR /opt/unbound/
 
 ENV PATH /opt/unbound/sbin:"$PATH"
 
-LABEL org.opencontainers.image.version=unbound-1.21.0-openssl-3.3.2-bookworm
+LABEL org.opencontainers.image.version=unbound-1.23.0-openssl-3.5.0-bookworm
 
 EXPOSE 5353/tcp
 EXPOSE 5353/udp
