@@ -16,11 +16,13 @@ Image is available at:
 
 Available tags:
 
+* `1.23.0` Unbound v1.23.0 with OpenSSL v3.5.0
+
 * `1.22.0` Unbound v1.22.0 with OpenSSL v3.4.1
 
 * `1.21.0` Unbound v1.21.0 with OpenSSL v3.3.2
 
-* `latest` equals `1.22.0`
+* `latest` equals `1.23.0`
 
 Currently for `amd64` only, maybe `arm` later.
 
