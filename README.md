@@ -31,7 +31,7 @@ Currently for `amd64` only, maybe `arm` later.
 Version 1.23.0
 
 Configure line: --disable-dependency-tracking --prefix=/opt/unbound --with-pthreads --with-username=_unbound --with-ssl=/opt/openssl --with-libevent --with-libnghttp2 --enable-dnstap --enable-tfo-server --enable-tfo-client --enable-event-api --enable-subnet
-Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 3.5.0 8 Apr 2025
+Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 3.5.1 1 Jul 2025
 Linked modules: dns64 subnetcache respip validator iterator
 TCP Fastopen feature available
 ````
