@@ -1,9 +1,9 @@
 FROM debian:bookworm AS openssl
 
-ENV VERSION_OPENSSL=openssl-3.5.0 \
-    SHA256_OPENSSL=344d0a79f1a9b08029b0744e2cc401a43f9c90acd1044d09a530b4885a8e9fc0 \
-    SOURCE_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz \
-    ASC_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz.asc
+ENV VERSION_OPENSSL=openssl-3.5.1 \
+    SHA256_OPENSSL=529043b15cffa5f36077a4d0af83f3de399807181d607441d734196d889b641f \
+    SOURCE_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz \
+    ASC_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.5.1/openssl-3.5.1.tar.gz.asc
 
 WORKDIR /tmp/src
 
@@ -126,9 +126,7 @@ RUN chmod +x /unbound.sh
 
 WORKDIR /opt/unbound/
 
-ENV PATH /opt/unbound/sbin:"$PATH"
-
-LABEL org.opencontainers.image.version=unbound-1.23.0-openssl-3.5.0-bookworm
+ENV PATH=/opt/unbound/sbin:"$PATH"
 
 EXPOSE 5353/tcp
 EXPOSE 5353/udp
