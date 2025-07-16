@@ -16,7 +16,7 @@ Image is available at:
 
 Available tags:
 
-* `1.23.1` Unbound v1.23.0 with OpenSSL v3.5.1
+* `1.23.1` Unbound v1.23.1 with OpenSSL v3.5.1
 
 * `1.23.0` Unbound v1.23.0 with OpenSSL v3.5.1
 
