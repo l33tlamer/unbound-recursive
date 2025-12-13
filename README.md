@@ -16,6 +16,8 @@ Image is available at:
 
 Available tags:
 
+* `1.24.2` Unbound v1.24.1 with OpenSSL v3.6.0
+
 * `1.24.1` Unbound v1.24.1 with OpenSSL v3.6.0
 
 * `1.24.0` Unbound v1.24.0 with OpenSSL v3.6.0
@@ -28,7 +30,7 @@ Currently for `amd64` only, maybe `arm` later.
 
 `unbound -V` output:
 ```
-Version 1.24.1
+Version 1.24.2
 
 Configure line: --disable-dependency-tracking --prefix=/opt/unbound --with-pthreads --with-username=_unbound --with-ssl=/opt/openssl --with-libevent --with-libnghttp2 --enable-dnstap --enable-tfo-server --enable-tfo-client --enable-event-api --enable-subnet
 Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 3.6.0 1 Oct 2025
