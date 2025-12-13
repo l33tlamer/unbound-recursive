@@ -16,7 +16,7 @@ Image is available at:
 
 Available tags:
 
-* `1.24.2` Unbound v1.24.1 with OpenSSL v3.6.0
+* `1.24.2` Unbound v1.24.2 with OpenSSL v3.6.0
 
 * `1.24.1` Unbound v1.24.1 with OpenSSL v3.6.0
 
@@ -24,7 +24,7 @@ Available tags:
 
 * `1.23.1` Unbound v1.23.1 with OpenSSL v3.5.1
 
-* `latest` equals `1.24.1`
+* `latest` equals `1.24.2`
 
 Currently for `amd64` only, maybe `arm` later.
 
