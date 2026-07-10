@@ -1,0 +1,122 @@
+FROM alpine:3.24 AS openssl
+
+ENV VERSION_OPENSSL=openssl-3.6.2 \
+    SHA256_OPENSSL=aaf51a1fe064384f811daeaeb4ec4dce7340ec8bd893027eee676af31e83a04f \
+    SOURCE_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.6.2/openssl-3.6.2.tar.gz \
+    ASC_OPENSSL=https://github.com/openssl/openssl/releases/download/openssl-3.6.2/openssl-3.6.2.tar.gz.asc
+
+WORKDIR /tmp/src
+
+RUN set -e -x && \
+    build_deps="build-base ca-certificates curl gnupg linux-headers libidn2-dev perl" && \
+    apk add --no-cache $build_deps && \
+    curl -L $SOURCE_OPENSSL -o openssl.tar.gz && \
+    echo "${SHA256_OPENSSL}  openssl.tar.gz" | sha256sum -c - && \
+    curl -L $ASC_OPENSSL -o openssl.tar.gz.asc && \
+    GNUPGHOME="$(mktemp -d)" && \
+    export GNUPGHOME && \
+    gpg --no-tty --auto-key-locate hkps://keys.openpgp.org --locate-keys openssl@openssl.org && \
+    gpg --batch --verify openssl.tar.gz.asc openssl.tar.gz && \
+    tar xzf openssl.tar.gz && \
+    cd $VERSION_OPENSSL && \
+    ./config \
+      --prefix=/opt/openssl \
+      --openssldir=/opt/openssl \
+      no-weak-ssl-ciphers \
+      no-ssl3 \
+      no-shared \
+      enable-ec_nistp_64_gcc_128 \
+      -DOPENSSL_NO_HEARTBEATS \
+      -fstack-protector-strong && \
+    make depend && \
+    nproc | xargs -I % make -j% && \
+    make install_sw && \
+    apk del $build_deps && \
+    rm -rf /tmp/*
+
+FROM alpine:3.24 AS unbound
+
+ENV NAME=unbound \
+    UNBOUND_VERSION=1.25.1 \
+    UNBOUND_SHA256=0fe8b6277b0959cfd17562debac0aa5f71e0b02dc4ffa9c60271c583edab586f \
+    UNBOUND_DOWNLOAD_URL=https://nlnetlabs.nl/downloads/unbound/unbound-1.25.1.tar.gz
+
+WORKDIR /tmp/src
+
+COPY --from=openssl /opt/openssl /opt/openssl
+
+RUN set -x && \
+    build_deps="build-base curl libevent-dev expat-dev nghttp2-dev protobuf-c-dev" && \
+    apk add --no-cache \
+      $build_deps \
+      bind-tools \
+      ca-certificates \
+      libevent \
+      expat \
+      nghttp2-libs \
+      protobuf-c && \
+    curl -sSL $UNBOUND_DOWNLOAD_URL -o unbound.tar.gz && \
+    echo "${UNBOUND_SHA256} *unbound.tar.gz" | sha256sum -c - && \
+    tar xzf unbound.tar.gz && \
+    rm -f unbound.tar.gz && \
+    cd unbound-$UNBOUND_VERSION && \
+    addgroup -S _unbound && \
+    adduser -S -D -H -s /sbin/nologin -G _unbound -h /etc _unbound && \
+    ./configure \
+        --disable-dependency-tracking \
+        --prefix=/opt/unbound \
+        --with-pthreads \
+        --with-username=_unbound \
+        --with-ssl=/opt/openssl \
+        --with-libevent \
+        --with-libnghttp2 \
+        --enable-dnstap \
+        --enable-tfo-server \
+        --enable-tfo-client \
+        --enable-event-api \
+        --enable-subnet && \
+    make install && \
+    mv /opt/unbound/etc/unbound/unbound.conf /opt/unbound/etc/unbound/unbound.conf.example && \
+    apk del $build_deps && \
+    rm -rf \
+        /opt/unbound/share/man \
+        /tmp/*
+
+
+FROM alpine:3.24
+
+ENV SUMMARY="unbound is a validating, recursive, and caching DNS resolver." \
+    DESCRIPTION="unbound is a validating, recursive, and caching DNS resolver."
+
+WORKDIR /tmp/src
+
+COPY --from=unbound /opt /opt
+
+RUN set -x && \
+    apk add --no-cache \
+      bind-tools \
+      ca-certificates \
+      libevent \
+      expat \
+      nghttp2-libs \
+      protobuf-c && \
+    addgroup -S _unbound && \
+    adduser -S -D -H -s /sbin/nologin -G _unbound -h /etc _unbound && \
+    rm -rf \
+        /opt/unbound/share/man \
+        /tmp/*
+
+COPY data/ /
+
+RUN chmod +x /unbound.sh
+
+WORKDIR /opt/unbound/
+
+ENV PATH=/opt/unbound/sbin:/opt/openssl/bin:"$PATH"
+
+EXPOSE 5353/tcp
+EXPOSE 5353/udp
+
+HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=3 CMD dig @127.0.0.1 -p 5353 google.com || exit 1
+
+CMD ["/unbound.sh"]
