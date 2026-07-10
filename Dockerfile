@@ -126,7 +126,7 @@ RUN chmod +x /unbound.sh
 
 WORKDIR /opt/unbound/
 
-ENV PATH=/opt/unbound/sbin:"$PATH"
+ENV PATH=/opt/unbound/sbin:/opt/openssl/bin:"$PATH"
 
 EXPOSE 5353/tcp
 EXPOSE 5353/udp
